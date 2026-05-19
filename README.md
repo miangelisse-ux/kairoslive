@@ -73,10 +73,25 @@ Kairos Live replaces traditional presentation tools with a live service system:
 
 ## 🚀 Status
 
-- SaaS deployed and active  
-- Stripe billing integrated  
-- Real-time system operational  
-- Multi-tenant architecture live  
+Kairos Live is currently in **pre-launch phase**.
+
+- Core system: complete
+- Real-time architecture (SSE): implemented
+- Multi-tenant system: implemented
+- Stripe billing: implemented
+- Deployment: in progress (final hardening + hosting setup)
+
+---
+
+## 🛣️ Launch Status
+
+Kairos Live is actively being prepared for public launch.
+
+Current focus:
+- Cloud deployment setup
+- Production environment configuration
+- Final UI polishing
+- Monitoring + reliability hardening
 
 ---
 
