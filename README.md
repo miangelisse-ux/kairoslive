@@ -40,19 +40,6 @@ Control the entire Sunday service in real time:
 
 ---
 
-### 📖 3. Sermon Creation Workflow
-
-![Sermon Creation](Assests/SERMONMAKE.gif)
-
-Create structured sermon flows:
-
-- build service order  
-- add verses and slides  
-- organize live presentation sequence  
-- prepare for Sunday execution  
-
----
-
 ## ⚡ What Makes Kairos Live Different
 
 Unlike traditional church presentation tools:
