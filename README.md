@@ -25,7 +25,8 @@ Instead of churches using PowerPoint, slide files, or disconnected tools, Kairos
 - 🌍 Switch Bible translations and languages dynamically  
 - 🔐 Manage church teams (admins, users, owners)  
 - 💳 Handle subscriptions like a SaaS product  
-Assests/login.gif
+
+
 ---
 
 ## 🧠 Core idea
