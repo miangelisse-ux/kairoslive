@@ -2,46 +2,46 @@
 
 ---
 
-## 🧠 System Overview
+## 📊 System Overview (C4 Model)
 
-Kairos Live is a **multi-tenant, real-time SaaS platform** for live church service orchestration.
+Kairos Live is a **multi-tenant, real-time SaaS system** designed for synchronized church service orchestration.
 
-It enables synchronized control of sermons, scripture display, and multi-device presentation workflows through an **event-driven, server-authoritative architecture**.
-
-All system behavior is driven by backend state changes and propagated in real time to connected clients.
+It follows an **event-driven, server-authoritative architecture**, where all state changes originate from the backend and propagate in real time via SSE.
 
 ---
 
-## 🧠 Core Architectural Principles
+## 🌍 Level 0 — System Context
 
-- **Server-authoritative state** → backend is the single source of truth  
-- **Event-driven updates** → real-time synchronization via SSE  
-- **Stateless clients** → frontend only renders server state  
-- **Multi-tenant isolation** → each church operates independently  
-- **External billing authority** → Stripe manages subscriptions  
+```mermaid
+flowchart LR
+
+Church[⛪ Church Staff] --> Kairos[Kairos Live System]
+Kairos --> Audience[👥 Congregation Displays]
+Kairos --> Stripe[💳 Stripe Billing]
+```
 
 ---
 
-## 🏗️ System Architecture (C4 Model)
+## 🏗️ Level 1 — Container Architecture
 
 ```mermaid
 flowchart TB
 
-Users[👤 Users / Admins]
+User[👤 Users / Admins]
 
-subgraph Kairos Live System
+subgraph KairosLive[Kairos Live Platform]
 
-Frontend[🖥️ Frontend Clients<br/>(Admin / Remote / Display)]
-API[🚀 API Server<br/>(Express + TypeScript)]
-DB[(🗄️ PostgreSQL<br/>System of Record)]
+Frontend[🖥️ Frontend Clients]
+API[🚀 API Server]
+DB[(🗄️ PostgreSQL)]
 SSE[📡 SSE Real-Time Layer]
-Billing[💳 Subscription Service]
+Billing[💳 Billing Service]
 
 end
 
 Stripe[Stripe API]
 
-Users --> Frontend
+User --> Frontend
 Frontend --> API
 
 API --> DB
@@ -50,57 +50,50 @@ API --> Billing
 
 Billing --> Stripe
 Stripe --> Billing
-
-SSE --> Frontend
 ```
 
 ---
 
-## ⚙️ Core Components
+## ⚙️ Core System Components
 
 ### 🚀 API Server
-Handles all business logic and state mutations:
-- Sermon creation and management
-- Authentication (JWT cookies)
-- Role-based access control (RBAC)
-- State updates and validation
+- Sermon management
+- Authentication (JWT + RBAC)
+- State validation
+- Business logic execution
 - Subscription enforcement
 
 ---
 
-### 🗄️ Database (PostgreSQL + Drizzle)
-System of record for all persistent data:
-
+### 🗄️ Database (PostgreSQL)
+System of record for all data:
 - Users
-- Churches (multi-tenant scope)
+- Churches (multi-tenant scoped)
 - Sermons
-- Sermon items (verses, slides, text)
+- Sermon items (slides, verses, text)
 - Subscription state
 
-All records are scoped by `church_id`.
+All data is scoped by `church_id`.
 
 ---
 
 ### 🖥️ Frontend Clients
-Stateless UI clients responsible for rendering server state:
+Stateless UI layers:
+- Admin Dashboard
+- Remote Controller
+- Display Screen
 
-- **Admin Dashboard** → system control
-- **Remote Controller** → live sermon control
-- **Display Screen** → fullscreen presentation output
-
-Clients never mutate shared state directly.
+Clients only render backend state.
 
 ---
 
-### 📡 Real-Time Layer (SSE)
-Handles real-time synchronization across all connected clients.
+### 📡 SSE Real-Time Layer
+- Server emits events on state changes
+- Clients subscribe to event stream
+- No polling
+- Instant sync across all displays
 
-- Backend emits events on state changes
-- Clients subscribe to SSE stream
-- No polling or manual refresh required
-- All displays update instantly and consistently
-
-### Event Types:
+Event types:
 - `verse_update`
 - `slide_update`
 - `service_state`
@@ -110,80 +103,76 @@ Handles real-time synchronization across all connected clients.
 
 ## 🔄 Runtime Execution Model
 
-Kairos Live follows a strict event-driven execution pipeline:
-
 ```mermaid
 flowchart TD
 
-Action[User Action<br/>(Remote / Admin)]
+Action[User Action]
 API[API Server]
 DB[(Database)]
-Event[SSE Broadcast Layer]
+SSE[SSE Event Broadcast]
 Clients[Display Clients]
 
 Action --> API
 API --> DB
 DB --> API
-API --> Event
-Event --> Clients
+API --> SSE
+SSE --> Clients
 ```
 
-### Execution Flow:
-1. User triggers action (remote/admin)
+### Execution Flow
+1. User triggers action (admin/remote)
 2. API validates request
-3. Database is updated (system of record)
-4. SSE event is emitted
-5. All connected clients update in real time
+3. Database updates system state
+4. SSE emits event
+5. All clients update instantly
 
 ---
 
 ## 📡 Real-Time System Behavior
 
-- Server-Sent Events (SSE) provide live updates
-- Backend is the only event producer
+- Backend is the single source of truth
 - Clients are passive subscribers
-- No polling or client-side state syncing
-- System ensures eventual consistency across all displays
+- SSE handles all synchronization
+- No polling or local state replication
+- Ensures eventual consistency across devices
 
 ---
 
 ## 🏢 Multi-Tenant Architecture
 
 - Each church is isolated via `church_id`
-- All data is tenant-scoped at the database level
+- All data is tenant-scoped
 - Authentication enforces workspace boundaries
 - Users cannot access other tenants
-- Admin roles are restricted per organization
-- Owner has global system override access
+- Admin access is scoped per church
+- Owner has global override access
 
 ---
 
 ## 💳 Billing System (Stripe)
 
-Stripe is the external billing authority.
-
-### Billing Flow
+### Flow
 
 ```text
 User selects plan
-→ Stripe Checkout Session created
-→ Payment processed by Stripe
+→ Stripe Checkout Session
+→ Payment completed
 → Stripe webhook sent to backend
-→ Subscription state updated in database
+→ Subscription updated in database
 → Access permissions enforced
 ```
 
-### Responsibilities:
+### Responsibilities
 - Subscription lifecycle management
-- Plan upgrades and downgrades
-- Webhook validation and reconciliation
+- Plan upgrades/downgrades
+- Webhook validation
 - Access control enforcement
 
 ---
 
 ## 🧠 System Design Characteristics
 
-Kairos Live demonstrates the following architecture patterns:
+Kairos Live demonstrates production SaaS architecture patterns:
 
 - Event-driven distributed system
 - Server-authoritative state management
@@ -196,7 +185,7 @@ Kairos Live demonstrates the following architecture patterns:
 
 ## 🚀 Summary
 
-Kairos Live is a production-grade, real-time SaaS system designed for synchronized live service management across distributed devices.
+Kairos Live is a production-grade real-time SaaS system for synchronized live service management.
 
 It demonstrates real-world system design principles including event-driven architecture, multi-tenancy, and server-authoritative state propagation.
 
