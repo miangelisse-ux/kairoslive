@@ -1,101 +1,97 @@
 # ⛪ Kairos Live
 
-Real-time church service operating system for scripture, sermons, and live multi-screen presentation control.
-
-Kairos Live is a SaaS platform that helps churches run Sunday services with real-time scripture display, sermon flow control, and synchronized displays across multiple devices.
+## ⚡ Real-Time Church Service Operating System
 
 ---
 
-## 🚀 What It Does
+## 🌸 Overview
 
-Kairos Live replaces traditional presentation tools with a live service system:
+Kairos Live is a **real-time church service operating system**.
 
-- 📖 Instant Bible verse display
-- 🎤 Sermon flow control (slides, verses, text)
-- 🖥️ Multi-screen real-time synchronization
-- 📱 Mobile + desktop remote control
-- 🌍 Bible translation switching
-- 💳 Subscription-based access (Stripe)
+In plain terms:
+
+> It’s software that helps churches run Sunday services smoothly by controlling Bible verses, sermon slides, and live projector screens in real time from one connected system.
 
 ---
 
-## ⚡ Key Features
+## ⛪ What it actually does
 
-- 📺 Live projector display (`/display`)
-- 🎛️ Sermon builder + controller (`/remote`)
-- 📖 Multi-translation Bible lookup
-- 🏢 Multi-tenant church workspaces
-- ⚡ Real-time updates (no refresh needed)
-- 💳 Stripe billing + subscriptions
+Instead of churches using PowerPoint, slide files, or disconnected tools, Kairos Live lets them:
 
----
-
-## 🧠 Tech Stack
-
-- React + Vite  
-- TypeScript  
-- Express.js  
-- PostgreSQL + Drizzle ORM  
-- JWT Authentication  
-- Server-Sent Events (SSE)  
-- Stripe  
+- 📖 Display Bible verses instantly on a screen  
+- 🎤 Run sermons as structured live “flows”  
+- 📱 Control everything from a phone or laptop during service  
+- 🖥️ Sync multiple screens at the same time  
+- 🌍 Switch Bible translations and languages dynamically  
+- 🔐 Manage church teams (admins, users, owners)  
+- 💳 Handle subscriptions like a SaaS product  
 
 ---
 
-## 🔄 How It Works
+## 🧠 Core idea
 
-1. Create account  
-2. Subscribe to a plan  
-3. Set up church workspace  
-4. Build sermon flow  
-5. Connect display screens  
-6. Run live service in real time  
+Most church software is either:
 
----
+- outdated presentation tools (like slide decks)  
+- or complex professional systems that are hard for volunteers  
 
-## 🧩 Real-Time System
+Kairos Live sits in the middle:
 
-- Backend is the source of truth  
-- Displays subscribe to SSE updates  
-- Remote controls send commands to backend  
-- All screens stay synchronized automatically  
+> simple enough for volunteers, powerful enough for real-time services
 
 ---
 
-## 🏛️ Multi-Tenant Model
+## ⚡ The key difference
 
-- Each church has isolated data  
-- Users belong to a workspace  
-- Admins manage their church only  
-- Owner has global system access  
+Kairos Live is not just “Bible display software.”
 
----
+It’s closer to:
 
-## 🚀 Status
+> a live control system for Sunday services
 
-Kairos Live is currently in **pre-launch phase**.
+That means:
 
-- Core system: complete
-- Real-time architecture (SSE): implemented
-- Multi-tenant system: implemented
-- Stripe billing: implemented
-- Deployment: in progress (final hardening + hosting setup)
+- everything updates instantly  
+- multiple devices stay in sync  
+- there is a single source of truth during service  
+- if something changes, the whole system updates live  
 
 ---
 
-## 🛣️ Launch Status
+## 🧩 Simple analogy
 
-Kairos Live is actively being prepared for public launch.
-
-Current focus:
-- Cloud deployment setup
-- Production environment configuration
-- Final UI polishing
-- Monitoring + reliability hardening
+- PowerPoint → static slides  
+- YouTube Live control room → real-time broadcast control  
+- Kairos Live → church-specific live service control system  
 
 ---
 
-## 👑 Owner
+## 🏛️ Who it’s for
 
-Kairos Live by SureCatch  
+- Churches  
+- Worship teams  
+- Volunteers running Sunday services  
+- Multi-campus ministries  
+- Small churches without technical staff  
 
+---
+
+## 🎯 The problem it solves
+
+Church services often break because of:
+
+- slide files  
+- volunteer errors  
+- WiFi issues  
+- disconnected tools  
+- complex presentation software  
+
+Kairos Live is built so:
+
+> a Sunday service can run without technical failure or confusion
+
+---
+
+## 🚀 One-line definition
+
+Kairos Live is a **real-time SaaS platform that powers church services through live scripture display, sermon control, and multi-device synchronization**.
