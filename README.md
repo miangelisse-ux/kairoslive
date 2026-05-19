@@ -1,6 +1,8 @@
 # Kairos Live
 
-Cloud-ready church presentation and scripture projection platform built for live services, volunteer teams, and multi-screen worship environments.
+Cloud-based church presentation and scripture projection platform built for live services, volunteer teams, and multi-screen worship environments.
+
+Kairos Live is a live production SaaS platform currently deployed online for churches and ministry teams to access through a subscription-based membership system.
 
 ---
 
@@ -8,9 +10,9 @@ Cloud-ready church presentation and scripture projection platform built for live
 
 Kairos Live is designed to streamline live church presentation workflows by centralizing scripture projection, media control, and service management into a single real-time platform.
 
-The system reduces presentation friction during services, improves volunteer coordination, and enables churches to manage live displays from multiple devices.
+The system reduces presentation friction during services, improves volunteer coordination, and enables churches to manage live displays from multiple devices in real time.
 
-It functions as a lightweight SaaS workflow platform for real-time worship presentation and service operations.
+It functions as a cloud-hosted SaaS workflow platform for worship presentation and live service operations.
 
 ---
 
@@ -25,19 +27,20 @@ Many churches rely on:
 - Expensive enterprise presentation software  
 - Limited support for remote or multi-screen control  
 
-Kairos Live solves these issues through a browser-based, cloud-ready presentation workflow system optimized for live worship environments.
+Kairos Live solves these issues through a browser-based, real-time presentation workflow system optimized for live worship environments.
 
 ---
 
 ## Usage
 
-1. Admin creates or schedules a service  
-2. Scriptures, songs, announcements, and media are added to the service queue  
-3. Volunteers or operators connect to the live session  
-4. Display screens sync in real time  
-5. Presentation changes are broadcast instantly to connected displays  
-6. Remote controllers can manage slides and scripture progression  
-7. Live updates propagate without refreshing connected clients  
+1. User creates an account  
+2. User subscribes to a monthly or yearly membership plan  
+3. Church or ministry workspace is created  
+4. Services, scriptures, songs, and announcements are added to the presentation queue  
+5. Volunteers or operators connect to the live session  
+6. Display screens sync in real time  
+7. Presentation changes are broadcast instantly to connected displays  
+8. Remote controllers can manage presentation flow from multiple devices  
 
 ---
 
@@ -45,11 +48,11 @@ Kairos Live solves these issues through a browser-based, cloud-ready presentatio
 
 - React  
 - TypeScript  
-- Firebase / Supabase architecture concepts  
+- Cloud-hosted SaaS infrastructure  
 - Real-time database synchronization  
 - WebSocket-style live updates  
-- Cloud-hosted infrastructure  
-- Authentication and session management  
+- Authentication and subscription management  
+- Stripe billing integration  
 - Responsive browser-based UI  
 
 ---
@@ -61,34 +64,36 @@ Kairos Live solves these issues through a browser-based, cloud-ready presentatio
 - Live service management  
 - Remote presentation controls  
 - Browser-based access across devices  
+- Subscription-based SaaS platform  
 - Volunteer-friendly workflow design  
 - Real-time content updates without refresh  
 - Presentation queue management  
 - Responsive display system  
 - Authentication and role-based workflows  
-- Cloud-ready SaaS architecture  
+- Monthly and yearly membership billing  
 
 ---
 
 ## System Logic Overview
 
 1. User authenticates into the platform  
-2. Service session is created or loaded  
-3. Presentation content is added to the queue  
-4. Connected display clients subscribe to live updates  
-5. Controller actions trigger real-time state updates  
-6. Updates propagate across all connected clients  
-7. Display screens render synchronized presentation content  
+2. Subscription and workspace access are validated  
+3. Service session is created or loaded  
+4. Presentation content is added to the queue  
+5. Connected display clients subscribe to live updates  
+6. Controller actions trigger real-time state updates  
+7. Updates propagate across all connected clients  
+8. Display screens render synchronized presentation content in real time  
 
 ---
 
 ## Engineering Considerations
 
 - **Real-Time Synchronization:** Live updates are propagated instantly across connected clients  
-- **Scalable Architecture:** Designed for cloud-hosted multi-user environments  
+- **Scalable SaaS Architecture:** Built for cloud-hosted multi-user environments  
 - **Responsive UI:** Optimized for desktop, tablet, and presentation displays  
-- **Operational Reliability:** Built for uninterrupted live-service workflows  
-- **Workflow Simplicity:** Designed for non-technical volunteer usability  
+- **Operational Reliability:** Designed for uninterrupted live-service workflows  
+- **Subscription Infrastructure:** Supports recurring monthly and yearly memberships  
 - **Session State Management:** Synchronizes presentation state across clients  
 - **Event-Driven Design:** Real-time actions trigger synchronized UI updates  
 
@@ -96,25 +101,25 @@ Kairos Live solves these issues through a browser-based, cloud-ready presentatio
 
 ## SaaS & Cloud Alignment
 
-Kairos Live is designed as a cloud-ready SaaS platform and aligns with modern distributed application architecture patterns.
+Kairos Live is designed as a cloud-native SaaS platform and aligns with modern distributed application architecture patterns.
 
-The platform can map directly to cloud-native infrastructure such as:
+The platform architecture maps to concepts commonly used in:
 
-- AWS Lambda / Cloud Functions  
-- Firebase / Supabase real-time databases  
-- API Gateway architectures  
-- Cloud authentication providers  
-- CDN-backed presentation delivery  
-- WebSocket event systems  
-- Multi-tenant SaaS infrastructure  
+- Multi-tenant SaaS systems  
+- Real-time collaboration platforms  
+- Event-driven cloud applications  
+- Subscription billing systems  
+- Live synchronization architectures  
+- Browser-based operational platforms  
 
 This project demonstrates:
 
 - Real-time application architecture  
-- SaaS platform design  
-- Event-driven systems  
-- Cloud workflow orchestration  
+- SaaS platform engineering  
+- Event-driven systems design  
+- Workflow orchestration  
 - Frontend/backend state synchronization  
+- Subscription and account management systems  
 
 ---
 
@@ -126,84 +131,45 @@ This project demonstrates:
 - Offline fallback mode  
 - Multi-campus organization support  
 - Presentation analytics dashboard  
-- Service templates and automation  
 - Advanced role permissions  
-- Stripe subscription management  
 - Internationalization (i18n) support  
+- Expanded presentation themes and layouts  
 
 ---
 
-## Setup
+## Accessing the Platform
 
-1. Clone the repository  
-2. Install dependencies  
-3. Configure environment variables  
-4. Start the development server  
-5. Connect database and authentication providers  
+Kairos Live is fully deployed and accessible online.
 
----
+### Getting Started
 
-## Configure Environment
-
-```env
-VITE_API_URL=your_api_url
-VITE_FIREBASE_API_KEY=your_key
-VITE_AUTH_DOMAIN=your_domain
-VITE_PROJECT_ID=your_project_id
-```
-
----
-
-## Run Locally
-
-```bash
-npm install
-npm run dev
-```
+1. Create an account  
+2. Select a monthly or yearly membership plan  
+3. Create or join a church workspace  
+4. Start building and managing live presentations  
 
 ---
 
 ## Flow Overview
 
 ```text
-Service Creation → Content Queue → Real-Time Sync Engine → Display Clients → Live Presentation Output
+Account Creation → Subscription Activation → Workspace Setup → Service Creation → 
+Real-Time Sync Engine → Connected Display Clients → Live Presentation Output
 ```
-
----
-
-## How to Run
-
-### Development Mode
-
-```bash
-npm run dev
-```
-
-Runs the local development server with live reload enabled.
-
----
-
-### Production Build
-
-```bash
-npm run build
-```
-
-Generates an optimized production build for deployment.
 
 ---
 
 ## Summary
 
-Kairos Live is a real-time worship presentation platform that combines cloud-ready SaaS architecture, live synchronization systems, and operational workflow automation into a single presentation environment.
+Kairos Live is a production SaaS platform that combines real-time synchronization, cloud-hosted infrastructure, and workflow automation into a unified worship presentation environment.
 
-The project demonstrates real-world engineering concepts used in:
+The platform demonstrates real-world engineering concepts used in:
 
 - SaaS platforms  
 - Real-time collaboration systems  
 - Cloud-native applications  
 - Event-driven architectures  
-- Operational workflow platforms  
-- Multi-client synchronization systems  
+- Subscription-based software systems  
+- Multi-client synchronization platforms  
 
 ---
