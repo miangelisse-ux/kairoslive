@@ -1,97 +1,99 @@
-# 🧠 Kairos Live — Architecture
+# 🧠 Kairos Live — Cloud Architecture (AWS-Style)
 
 ---
 
-## 📊 System Overview (C4 Model)
+## 📊 System Overview
 
-Kairos Live is a **multi-tenant, real-time SaaS system** designed for synchronized church service orchestration.
+Kairos Live is a **multi-tenant, real-time SaaS platform** designed for synchronized church service orchestration.
 
-It follows an **event-driven, server-authoritative architecture**, where all state changes originate from the backend and propagate in real time via SSE.
-
----
-
-## 🌍 Level 0 — System Context
-
-```mermaid
-flowchart LR
-
-Church[⛪ Church Staff] --> Kairos[Kairos Live System]
-Kairos --> Audience[👥 Congregation Displays]
-Kairos --> Stripe[💳 Stripe Billing]
-```
+It follows a **cloud-native, event-driven architecture** where all state changes are handled by backend services and propagated in real time to connected clients.
 
 ---
 
-## 🏗️ Level 1 — Container Architecture
+## ☁️ High-Level Cloud Architecture (AWS Mapping)
 
 ```mermaid
 flowchart TB
 
-User[👤 Users / Admins]
+Users[Church Staff / Admins]
 
-subgraph KairosLive[Kairos Live Platform]
+subgraph AWS_Cloud[Cloud Infrastructure (AWS Equivalent)]
 
-Frontend[🖥️ Frontend Clients]
-API[🚀 API Server]
-DB[(🗄️ PostgreSQL)]
-SSE[📡 SSE Real-Time Layer]
-Billing[💳 Billing Service]
+Frontend[S3 + CloudFront Frontend]
+API[API Gateway]
+Backend[ECS / EC2 API Service]
+DB[(RDS PostgreSQL)]
+Events[Event Stream (SSE / WebSockets)]
+Billing[Billing Service]
 
 end
 
 Stripe[Stripe API]
 
-User --> Frontend
+Users --> Frontend
 Frontend --> API
+API --> Backend
 
-API --> DB
-API --> SSE
-API --> Billing
+Backend --> DB
+Backend --> Events
+Backend --> Billing
 
 Billing --> Stripe
 Stripe --> Billing
+
+Events --> Frontend
 ```
 
 ---
 
-## ⚙️ Core System Components
+## 🧩 AWS Service Mapping
 
-### 🚀 API Server
-- Sermon management
+| Kairos Component | AWS Equivalent |
+|-----------------|----------------|
+| Frontend UI | S3 + CloudFront |
+| API Routing | API Gateway |
+| Backend Server | ECS / EC2 (Express + TS) |
+| Database | RDS PostgreSQL |
+| Real-Time Layer | SSE / WebSockets (API Gateway / EventBridge) |
+| Billing | Stripe (external service) |
+
+---
+
+## ⚙️ Core Backend Services
+
+### 🚀 API Service (ECS / EC2)
+Handles all core business logic:
+- Sermon management and execution
 - Authentication (JWT + RBAC)
-- State validation
-- Business logic execution
+- Multi-tenant request isolation
+- State validation and orchestration
 - Subscription enforcement
 
 ---
 
-### 🗄️ Database (PostgreSQL)
-System of record for all data:
+### 🗄️ Database (RDS PostgreSQL)
+System of record for all persistent data.
+
+Core entities:
 - Users
-- Churches (multi-tenant scoped)
+- Churches (multi-tenant isolation)
 - Sermons
-- Sermon items (slides, verses, text)
+- Sermon items (slides, verses, text blocks)
 - Subscription state
 
-All data is scoped by `church_id`.
+All data is scoped by `church_id` for strict isolation.
 
 ---
 
-### 🖥️ Frontend Clients
-Stateless UI layers:
-- Admin Dashboard
-- Remote Controller
-- Display Screen
+### 📡 Real-Time Event System (SSE / EventBridge Model)
 
-Clients only render backend state.
+Kairos Live uses a **push-based event system**:
 
----
-
-### 📡 SSE Real-Time Layer
-- Server emits events on state changes
+- Backend is the only event producer
+- State changes trigger events
 - Clients subscribe to event stream
-- No polling
-- Instant sync across all displays
+- No polling required
+- Real-time synchronization across all devices
 
 Event types:
 - `verse_update`
@@ -101,92 +103,126 @@ Event types:
 
 ---
 
-## 🔄 Runtime Execution Model
+### 🖥️ Frontend Layer (S3 + CloudFront)
+
+Stateless frontend clients:
+
+- Admin Dashboard → service control
+- Remote Controller → live sermon navigation
+- Display Screen → fullscreen projection
+
+Clients only render server state (no local source of truth).
+
+---
+
+## 🔄 Cloud Runtime Execution Flow
 
 ```mermaid
 flowchart TD
 
-Action[User Action]
-API[API Server]
-DB[(Database)]
-SSE[SSE Event Broadcast]
+UserAction[User Action (Admin / Remote)]
+APIGW[API Gateway]
+Backend[ECS API Service]
+DB[(RDS Database)]
+EventStream[SSE / Event System]
 Clients[Display Clients]
 
-Action --> API
-API --> DB
-DB --> API
-API --> SSE
-SSE --> Clients
+UserAction --> APIGW
+APIGW --> Backend
+
+Backend --> DB
+DB --> Backend
+
+Backend --> EventStream
+EventStream --> Clients
 ```
 
-### Execution Flow
-1. User triggers action (admin/remote)
-2. API validates request
-3. Database updates system state
-4. SSE emits event
-5. All clients update instantly
+### Execution Steps
+1. User triggers action via frontend
+2. API Gateway routes request to backend service
+3. Backend validates and processes request
+4. RDS updates system state
+5. Event stream broadcasts update
+6. All connected displays update instantly
 
 ---
 
-## 📡 Real-Time System Behavior
+## 📡 Real-Time Architecture Model
 
+Kairos Live uses a **server-authoritative push model**:
+
+```
+Backend (ECS Service)
+        ↓
+Event Stream (SSE / WebSocket Layer)
+        ↓
+All Connected Frontend Clients
+```
+
+### Key Properties:
 - Backend is the single source of truth
 - Clients are passive subscribers
-- SSE handles all synchronization
-- No polling or local state replication
-- Ensures eventual consistency across devices
+- No polling or client-side sync logic
+- Strong eventual consistency across devices
 
 ---
 
-## 🏢 Multi-Tenant Architecture
+## 🏢 Multi-Tenant SaaS Architecture
 
 - Each church is isolated via `church_id`
-- All data is tenant-scoped
+- All database queries are tenant-scoped
 - Authentication enforces workspace boundaries
-- Users cannot access other tenants
-- Admin access is scoped per church
+- Users cannot access other churches
+- Admin roles are scoped per organization
 - Owner has global override access
 
 ---
 
-## 💳 Billing System (Stripe)
+## 💳 Billing System (Stripe Integration)
 
-### Flow
+Stripe is the external billing authority.
+
+### Billing Flow
 
 ```text
-User selects plan
-→ Stripe Checkout Session
-→ Payment completed
-→ Stripe webhook sent to backend
-→ Subscription updated in database
-→ Access permissions enforced
+User selects subscription plan
+→ Stripe Checkout Session created
+→ Payment processed by Stripe
+→ Stripe webhook sent to backend API
+→ Subscription updated in RDS
+→ Feature access enforced in backend
 ```
 
-### Responsibilities
+### Responsibilities:
 - Subscription lifecycle management
-- Plan upgrades/downgrades
-- Webhook validation
+- Plan upgrades and downgrades
+- Webhook verification
 - Access control enforcement
 
 ---
 
-## 🧠 System Design Characteristics
+## 🧠 Cloud Architecture Characteristics
 
-Kairos Live demonstrates production SaaS architecture patterns:
+Kairos Live demonstrates production-grade cloud engineering patterns:
 
-- Event-driven distributed system
-- Server-authoritative state management
-- Multi-tenant SaaS isolation
-- Stateless frontend architecture
-- Real-time synchronization via SSE
-- External billing integration (Stripe)
+- Stateless backend services (ECS / EC2)
+- Managed database layer (RDS)
+- Event-driven real-time system design
+- Multi-tenant SaaS isolation model
+- Externalized billing system (Stripe)
+- Decoupled frontend via CDN delivery
 
 ---
 
 ## 🚀 Summary
 
-Kairos Live is a production-grade real-time SaaS system for synchronized live service management.
+Kairos Live is a cloud-native, real-time SaaS platform built for synchronized live service management.
 
-It demonstrates real-world system design principles including event-driven architecture, multi-tenancy, and server-authoritative state propagation.
+It demonstrates production-level system design principles including:
+- Event-driven architecture
+- Multi-tenant SaaS design
+- Server-authoritative state management
+- Real-time distributed synchronization
+- Cloud service decomposition (AWS-style)
 
 ---
