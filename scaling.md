@@ -19,14 +19,12 @@ flowchart TB
 
 Users[Users]
 
-subgraph Cloud["Scalable Cloud Layer"]
-
+subgraph Cloud
 LB[Load Balancer / API Gateway]
 API[ECS API Service Auto Scaling]
 DB[(RDS PostgreSQL)]
 Cache[(Redis Optional Layer)]
 Events[SSE Event Stream Layer]
-
 end
 
 Frontend[Clients]
@@ -39,6 +37,15 @@ API --> Cache
 API --> Events
 
 Events --> Frontend
+```
+
+### 💡 What this shows
+- Users enter through a load balancer
+- Requests are distributed across ECS API instances
+- PostgreSQL remains the single source of truth
+- Redis is optional for caching/scaling improvements
+- SSE pushes real-time updates to all connected clients
+- Frontend stays stateless and horizontally scalable
 ---
 
 ## 📈 What Scales in Kairos Live
