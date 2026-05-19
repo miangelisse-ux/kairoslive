@@ -29,7 +29,7 @@ Users securely log in and select Bible verses to display instantly on service sc
 
 ### 🎛️ 2. Live Sermon Control System
 
-![Sermon Control](Assests/control.gif)
+![Sermon Control](Assests/sermons.gif)
 
 Control the entire Sunday service in real time:
 
@@ -42,7 +42,7 @@ Control the entire Sunday service in real time:
 
 ### 📖 3. Sermon Creation Workflow
 
-![Sermon Creation](Assests/create.gif)
+![Sermon Creation](Assests/SERMONMAKE.gif)
 
 Create structured sermon flows:
 
