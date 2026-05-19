@@ -1,25 +1,25 @@
-## 🧠 C4 Architecture Overview (System Levels)
+## 📊 System Architecture (C4 Model)
 
-Kairos Live architecture is described using a C4-style breakdown:
+Kairos Live architecture is modeled using the C4 framework to represent different levels of system abstraction:
 
-- **Level 0 (Context):** External users interacting with the platform  
-- **Level 1 (Container):** Core services and system boundaries  
-- **Level 2 (Component):** Internal service responsibilities
+- **Level 0:** System Context
+- **Level 1:** Container Architecture
+- **Level 2:** Component + Runtime Behavior
 
 ---
 
-## 🌍 Level 0 — System Context
+## 🌍 Level 0 — System Context View
 
 ```mermaid
 flowchart LR
 
-Church[⛪ Church Staff] --> Kairos[Kairos Live Platform]
-Kairos --> Audience[👥 Congregation Viewing Displays]
-Kairos --> Stripe[💳 Stripe Billing System]
+Church[⛪ Church Staff] --> Kairos[Kairos Live System]
+Kairos --> Audience[👥 Congregation Displays]
+Kairos --> Stripe[💳 Stripe Billing]
 ```
 
-### Context Description
-Kairos Live acts as the central coordination system between church operators, live audiences, and external billing infrastructure.
+### Context Summary
+Kairos Live operates as the central system connecting church operators, live audience displays, and external payment infrastructure.
 
 ---
 
@@ -30,12 +30,12 @@ flowchart TB
 
 User[👤 Users / Admins]
 
-subgraph Kairos Live System
+subgraph Kairos Live Platform
 
 Frontend[🖥️ Frontend Clients]
 API[🚀 API Server]
 DB[(🗄️ PostgreSQL)]
-SSE[📡 Real-Time SSE Layer]
+SSE[📡 SSE Real-Time Layer]
 Billing[💳 Billing Service]
 
 end
@@ -51,28 +51,27 @@ Billing --> Stripe
 Stripe --> Billing
 ```
 
-### Container Description
-Kairos Live is composed of five core containers:
-
+### Container Summary
+The system is divided into five core containers:
 - Frontend clients (dashboard, remote, display)
-- API server (core business logic)
+- API server (business logic + orchestration)
 - PostgreSQL database (system of record)
-- SSE layer (real-time sync)
+- SSE layer (real-time synchronization)
 - Billing service (Stripe integration)
 
 ---
 
-## ⚙️ Level 2 — Core Backend Components
+## ⚙️ Level 2 — Component & Runtime Behavior
 
 ```mermaid
 flowchart LR
 
 API[API Server]
 
-Auth[Auth / RBAC]
+Auth[Auth + RBAC]
 Sermon[Sermon Engine]
-Church[Church / Multi-Tenant Logic]
-Billing[Subscription Logic]
+Church[Multi-Tenant Layer]
+Billing[Subscription Engine]
 Realtime[SSE Event Dispatcher]
 DB[(PostgreSQL)]
 
@@ -83,58 +82,57 @@ API --> Billing
 API --> DB
 
 Sermon --> Realtime
-Realtime --> Frontend[Display Clients]
+Realtime --> Clients[Display Clients]
 ```
 
 ---
 
-## 🔄 Runtime System Behavior Model
+## 🔄 Runtime Execution Model (Critical)
 
-Kairos Live operates as a **server-authoritative event-driven system**:
+Kairos Live is **event-driven and server-authoritative**.
 
 ```mermaid
 flowchart TD
 
-Action[User Action - Remote / Admin]
+Action[User Action - Remote/Admin]
 API[API Server]
 DB[(Database Update)]
-Event[SSE Event Emission]
-Clients[All Display Clients]
+Event[SSE Event Broadcast]
+Display[All Display Screens]
 
 Action --> API
 API --> DB
 DB --> API
 API --> Event
-Event --> Clients
+Event --> Display
 ```
 
-### Key Behavior Rules
-
+### Runtime Rules
 - Backend is the **single source of truth**
-- Clients never modify shared state directly
-- All updates propagate through SSE events
-- Database persists authoritative state
-- Displays are passive renderers
+- Clients do NOT maintain shared state
+- All updates flow through API → DB → SSE
+- Displays are passive subscribers only
 
 ---
 
-## 📡 Real-Time Architecture Summary
+## 📡 Real-Time System Behavior
 
-- Server-Sent Events (SSE) handles live synchronization
-- No polling or client-side state replication
-- Event-driven propagation model ensures consistency
-- Multiple displays stay synchronized in real time
+- SSE maintains live synchronization across all devices
+- No polling or client-side reconciliation required
+- Every state change triggers a broadcast event
+- Multiple screens stay synchronized in real time
 
 ---
 
-## 🧠 Architectural Insight
+## 🧠 Architecture Insight
 
-This system is designed around:
+This system demonstrates:
 
-- **Event-driven architecture**
-- **Multi-tenant SaaS isolation**
-- **Server-authoritative state management**
-- **Real-time distributed synchronization**
+- Event-driven distributed architecture
+- Multi-tenant SaaS design
+- Server-authoritative state management
+- Real-time synchronization via SSE
+- Decoupled frontend clients
 
 ---
 
