@@ -1,3 +1,128 @@
+## 🧠 Architecture Model
+
+Kairos Live is designed as a **server-authoritative, event-driven SaaS system** with real-time synchronization across distributed clients.
+
+The architecture follows a C4-style model:
+
+- **Level 0:** External system context
+- **Level 1:** Container architecture (services)
+- **Level 2:** Runtime + internal component behavior
+
+---
+
+## 🧭 Design Principles
+
+- Backend is the **single source of truth**
+- All clients are **stateless renderers**
+- System state is propagated via **event-driven SSE**
+- Multi-tenant isolation enforced at the data layer
+- Billing and access control handled externally via Stripe
+
+---
+
+## 📊 System Context (Level 0)
+
+```mermaid
+flowchart LR
+
+Church[⛪ Church Operators] --> System[Kairos Live]
+System --> Audience[👥 Congregation Displays]
+System --> Stripe[💳 Stripe Billing]
+```
+
+---
+
+## 🏗️ Container Architecture (Level 1)
+
+```mermaid
+flowchart TB
+
+Users[👤 Users / Admins]
+
+subgraph Kairos System
+
+Frontend[🖥️ Frontend Clients]
+API[🚀 API Server]
+DB[(🗄️ PostgreSQL)]
+SSE[📡 Real-Time Event Layer]
+Billing[💳 Billing Service]
+
+end
+
+Stripe[Stripe API]
+
+Users --> Frontend
+Frontend --> API
+API --> DB
+API --> SSE
+API --> Billing
+
+Billing --> Stripe
+Stripe --> Billing
+```
+
+---
+
+## ⚙️ Runtime Architecture (Level 2)
+
+```mermaid
+flowchart TD
+
+Action[User Action]
+API[API Server]
+DB[(Database)]
+Event[SSE Broadcast Layer]
+Clients[All Display Clients]
+
+Action --> API
+API --> DB
+DB --> API
+API --> Event
+Event --> Clients
+```
+
+---
+
+## 🔄 Execution Model
+
+Kairos Live operates on a strict event-driven lifecycle:
+
+1. Client sends action (remote/admin)
+2. API validates and processes request
+3. Database becomes source of truth
+4. SSE emits state change event
+5. All connected clients update instantly
+
+---
+
+## 📡 Real-Time System Properties
+
+- Server-Sent Events provide one-way real-time streaming
+- No client polling or shared frontend state
+- All updates are server-mediated
+- Display clients are passive subscribers
+- System guarantees eventual UI consistency across devices
+
+---
+
+## 🏢 Multi-Tenant Architecture
+
+- Each church operates in an isolated tenant scope (`church_id`)
+- All data is partitioned per tenant
+- Authentication enforces workspace boundaries
+- Admin access is restricted to tenant scope
+- Owner has global override privileges
+
+---
+
+## 💳 Billing & Access Control
+
+- Stripe handles all payment processing
+- Webhooks synchronize subscription state
+- Subscription status controls system access
+- Billing service acts as external authority for entitlement
+
+---
 ## 📊 System Architecture (C4 Model)
 
 Kairos Live architecture is modeled using the C4 framework to represent different levels of system abstraction:
