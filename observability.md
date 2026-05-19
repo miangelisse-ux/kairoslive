@@ -4,9 +4,9 @@
 
 ## 🌸 Overview
 
-Kairos Live is designed with a **production-aware observability model**, ensuring system health, performance, and reliability can be tracked across all layers.
+Kairos Live is designed with a **pre-deployment observability model** to ensure system health, performance, and reliability can be tracked across all major components.
 
-The system follows a simple principle:
+The system follows a core principle:
 
 > “If it can fail, it should be visible 💡”
 
@@ -34,95 +34,107 @@ DB --> Logs
 Events --> Metrics
 Stripe --> Logs
 ```
+---
+## 📡 What We Monitor
 
 ---
 
-## 📡 What We Monitor
-
 ### 🚀 Backend (API Server)
 
-We track:
-- request latency ⏱️
-- endpoint usage patterns 📊
-- error rates 🚨
-- authentication failures 🔐
-- subscription validation issues 💳
+Tracked signals:
+
+- request latency ⏱️  
+- endpoint usage patterns 📊  
+- error rates 🚨  
+- authentication failures 🔐  
+- subscription validation issues 💳  
 
 ---
 
 ### ⚡ Real-Time Layer (SSE)
 
-Critical real-time metrics:
-- active connections 👥
-- connection drops 📉
-- event delivery delay ⏱️
-- event failure rate 🚨
-- reconnect frequency 🔁
+Key real-time metrics:
+
+- active connections 👥  
+- connection drops 📉  
+- event delivery delay ⏱️  
+- event failure rate 🚨  
+- reconnect frequency 🔁  
 
 ---
 
 ### 🗄️ Database (PostgreSQL)
 
-We monitor:
-- slow queries 🐢
-- connection pool saturation 🔌
-- read/write latency 📊
-- tenant query distribution 🏢
+Monitored areas:
+
+- slow queries 🐢  
+- connection pool usage 🔌  
+- read/write latency 📊  
+- tenant query distribution 🏢  
 
 ---
 
 ### 🖥️ Frontend Clients
 
-Tracked via:
-- Sentry error reporting 🐞
-- UI crashes or rendering failures
-- failed SSE reconnects
-- display desync events
+Frontend reliability signals:
+
+- UI runtime errors 🐞  
+- SSE reconnect failures 🔁  
+- display rendering issues 🖥️  
+- client desync events ⚠️  
+
+*(typically surfaced via tools like Sentry)*
 
 ---
 
 ### 💳 Billing System (Stripe)
 
-Monitored events:
-- failed payments ❌
-- webhook failures ⚠️
-- subscription sync mismatches
-- checkout completion rate
+Tracked billing events:
+
+- failed payments ❌  
+- webhook failures ⚠️  
+- subscription sync issues  
+- checkout completion rate  
 
 ---
 
-## 📊 Key Metrics (System Health Signals)
+## 📊 Key System Metrics
 
-Kairos Live defines core “health indicators”:
+---
 
-### System-Level Metrics
-- API response time (p95 latency)
-- SSE event delivery time
-- DB query latency
-- error rate per endpoint
+### System Health Metrics
 
-### Business-Level Metrics
-- active churches 🏢
-- active services 🎛️
-- sermon session duration 📖
-- subscription conversion rate 💳
+- API response time (p95 latency)  
+- SSE event delivery time  
+- database query latency  
+- error rate per endpoint  
+
+---
+
+### Product Metrics (future-facing)
+
+- active churches 🏢  
+- active sermon sessions 🎛️  
+- average service duration 📖  
+- subscription conversion rate 💳  
 
 ---
 
 ## 🚨 Alerting Strategy
 
-Alerts are triggered when:
+Alerts are triggered when thresholds are exceeded:
 
-- API error rate spikes 🚨
-- SSE connection drops increase 📉
-- DB latency exceeds threshold 🐢
-- Stripe webhook failures occur 💳
-- frontend crash rate increases 🖥️
+- API error rate spikes 🚨  
+- SSE connection drops increase 📉  
+- database latency rises 🐢  
+- Stripe webhook failures occur 💳  
+- frontend error rate increases 🖥️  
 
-Alerts would route to:
-- email notifications 📧
-- Slack (optional integration 💬)
-- admin dashboard warnings 🧑‍💼
+### Alert destinations (conceptual):
+
+- email notifications 📧  
+- Slack integration 💬  
+- admin dashboard warnings 🧑‍💼  
 
 ---
 
@@ -131,84 +143,24 @@ Alerts would route to:
 Kairos uses layered logging:
 
 ### 1. Application Logs
-- API request logs
-- authentication logs
-- sermon state changes
+
+- API request logs  
+- authentication events  
+- sermon state changes  
+
+---
 
 ### 2. System Logs
-- DB query logs
-- SSE connection lifecycle logs
-- webhook processing logs
 
-### 3. Event Logs (Important)
-Every critical action produces an event trace:
+- database queries  
+- SSE connection lifecycle events  
+- webhook processing logs  
+
+---
+
+### 3. Event Logs
+
+Every critical action follows a traceable flow:
 
 ```text
 User Action → API → DB → SSE → Clients
-```
-
-This allows full replay/debugging of system behavior.
-
----
-
-## 🧠 Distributed Tracing Model (Conceptual)
-
-Even without full tracing tools like Jaeger, Kairos is structured for traceability:
-
-```mermaid
-flowchart LR
-
-Request[👤 Request]
-API[🚀 API]
-DB[(🗄️ DB)]
-Event[⚡ SSE]
-Client[🖥️ Client]
-
-Request --> API --> DB --> API --> Event --> Client
-```
-
-Each step can be logged with:
-- request_id
-- church_id (tenant)
-- timestamp
-- event type
-
----
-
-## 🔁 Real-Time Debugging Flow
-
-If something goes wrong in a live service:
-
-1. Check API logs 📄  
-2. Check DB state 🗄️  
-3. Verify SSE event emission ⚡  
-4. Confirm client reception 🖥️  
-5. Validate Stripe sync (if billing-related) 💳  
-
----
-
-## 🧱 Observability Design Principles
-
-Kairos Live follows these principles:
-
-- Everything is traceable 🔍  
-- Backend is the single source of truth 🧠  
-- Events are loggable and replayable 🔁  
-- Failures must be visible, not silent 🚨  
-- Real-time systems require connection awareness ⚡  
-
----
-
-## 🚀 Summary
-
-Kairos Live is designed with **production-grade observability awareness**, including:
-
-- backend monitoring 📊  
-- real-time event tracking ⚡  
-- database performance visibility 🗄️  
-- frontend error reporting 🖥️  
-- billing reliability tracking 💳  
-
----
-
-💡 Goal: If something breaks on Sunday, you know immediately — and exactly where.
