@@ -4,11 +4,11 @@
 
 ## 🌸 Overview
 
-Kairos Live is a **real-time, event-driven SaaS system** that synchronizes sermon content across multiple devices instantly.
+Kairos Live is a **pre-deployment, real-time SaaS system design** built around Server-Sent Events (SSE) for instant, server-driven updates across connected clients.
 
-It uses **Server-Sent Events (SSE)** to push updates from the backend to all connected clients.
+It uses **Server-Sent Events (SSE)** to stream updates from the backend to all connected clients in real time.
 
-The design principle is:
+The core design principle is:
 
 > “One change → instantly reflected everywhere ✨”
 
@@ -30,63 +30,49 @@ API --> DB
 API --> Event
 Event --> Clients
 ```
+---
 
-### 💡 What this means
-- User triggers an action (next slide, verse change, etc.)
-- Backend processes and stores the state
-- SSE broadcasts the update
-- All connected displays update instantly
+## 💡 Flow Explanation
+
+- A user triggers an action (e.g., next slide, verse change)
+- The backend processes and persists the new state
+- An SSE event is emitted from the server
+- All connected clients receive the update instantly
 
 ---
 
 ## 📡 SSE System Design
 
-### 🚀 Server-Sent Events Flow
-
-```mermaid
-flowchart TD
-
-Client[Display Client]
-Connect[Establish SSE Connection]
-API[API Server]
-Stream[Event Stream Channel]
-Update[Live Updates]
-
-Client --> Connect
-Connect --> API
-API --> Stream
-Stream --> Update
-Update --> Client
-```
+### 🚀 Event Streaming Flow
 
 ---
 
 ## ⚙️ Core Real-Time Principles
 
 ### 🧠 1. Server-Authoritative State
-- Backend is the ONLY source of truth
-- Clients never mutate shared state directly
+- The backend is the single source of truth
+- Clients never directly modify shared state
 
 ---
 
 ### ⚡ 2. Push-Based Updates
-- No polling
-- No client-side syncing loops
+- No polling mechanisms
+- No client-side synchronization loops
 - Updates are pushed instantly via SSE
 
 ---
 
 ### 🖥️ 3. Stateless Clients
-- Display screens are fully stateless
-- They only render received events
-- Reconnect = full state rehydrate
+- Display clients hold no persistent state
+- They render only what the server sends
+- Reconnect triggers a full state refresh
 
 ---
 
 ### 🔁 4. Reconnection Safety
 - Clients automatically reconnect on disconnect
-- On reconnect, latest state is re-fetched from DB
-- No manual refresh required
+- Latest state is re-fetched from the server
+- No manual refresh is required
 
 ---
 
@@ -95,90 +81,23 @@ Update --> Client
 Kairos Live uses structured event broadcasting:
 
 - `verse_update` → scripture changes 📖  
-- `slide_update` → sermon flow changes 🎤  
+- `slide_update` → sermon flow updates 🎤  
 - `service_state` → service status changes 🎛️  
-- `service_control` → remote commands 🎮  
+- `service_control` → remote control actions 🎮  
 
 ---
 
-## 🧩 Runtime Behavior
+## 🧩 Runtime Behavior Example
 
-### 📖 Example Flow (Live Sermon)
+### 📖 Live Sermon Flow
 
 ```text
-Pastor clicks "Next Slide"
+User clicks "Next Slide"
         ↓
-Remote Client sends request
+Remote client sends request
         ↓
-API updates database
+API updates database state
         ↓
-SSE emits slide_update event
+SSE emits `slide_update` event
         ↓
 All display screens update instantly
-```
-
----
-
-## ⚡ Why SSE (Not WebSockets)
-
-Kairos uses SSE because:
-
-- simpler connection model 🔌  
-- auto-reconnect built-in 🔁  
-- perfect for one-way updates 📡  
-- lower operational complexity than WebSockets  
-
-Ideal for:
-> broadcast-style real-time systems like live displays
-
----
-
-## 🧠 Failure Handling
-
-If connection drops:
-
-1. Client automatically reconnects 🔁  
-2. Server sends latest state 📦  
-3. Display re-renders instantly 🖥️  
-4. No user intervention required  
-
----
-
-## 🏢 Multi-Client Synchronization
-
-Kairos supports multiple simultaneous screens:
-
-- main projector display 🖥️  
-- backup display screen 🖥️  
-- mobile remote controller 📱  
-
-All stay perfectly synchronized via SSE stream.
-
----
-
-## 🧱 Design Principles
-
-Kairos real-time system follows:
-
-- Single source of truth (backend) 🧠  
-- Stateless clients 🖥️  
-- Event-driven updates ⚡  
-- Automatic recovery on reconnect 🔁  
-- No polling or client sync logic 🚫  
-
----
-
-## 🚀 Summary
-
-Kairos Live real-time system ensures:
-
-- instant updates across all devices ⚡  
-- zero manual refresh required 🔁  
-- consistent sermon state everywhere 🧠  
-- lightweight, scalable event streaming 📡  
-
----
-
-💡 End goal:
-
-> “When one person changes the service, everyone sees it instantly — without thinking about it.”
