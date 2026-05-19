@@ -12,24 +12,24 @@ The scaling model is based on a simple principle:
 
 ---
 
-## 🏗️ High-Level Scaling Model
+## ⚡ High-Level Scaling Model
 
 ```mermaid
 flowchart TB
 
-Users[👤 Users]
+Users[Users]
 
-subgraph Cloud[Scalable Cloud Layer ☁️]
+subgraph Cloud["Scalable Cloud Layer"]
 
 LB[Load Balancer / API Gateway]
-API[ECS API Service (Auto Scaling)]
+API[ECS API Service Auto Scaling]
 DB[(RDS PostgreSQL)]
 Cache[(Redis Optional Layer)]
-Events[SSE / Event Stream Layer]
+Events[SSE Event Stream Layer]
 
 end
 
-Frontend[🖥️ Clients]
+Frontend[Clients]
 
 Users --> LB
 LB --> API
@@ -39,8 +39,6 @@ API --> Cache
 API --> Events
 
 Events --> Frontend
-```
-
 ---
 
 ## 📈 What Scales in Kairos Live
