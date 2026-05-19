@@ -4,12 +4,17 @@
 
 ## 📊 System Overview 🌸
 
-Kairos Live is a **multi-tenant, real-time SaaS platform** built for synchronized church service orchestration.
+Kairos Live is a **multi-tenant real-time SaaS platform** for running synchronized church services.
 
-It uses a **cloud-native, event-driven architecture**, where the backend acts as the single source of truth and all updates are streamed instantly to connected devices 💫
+It follows a **cloud-native, event-driven architecture**, where:
 
-Think:
-> “One system → many screens → perfectly in sync ✨”
+💡 The backend controls everything  
+⚡ Events update all screens instantly  
+🏢 Each church is fully isolated  
+💳 Billing is handled via Stripe  
+
+Think of it as:
+> “One service → many screens → perfect real-time sync ✨”
 
 ---
 
@@ -57,27 +62,27 @@ Events --> Frontend
 | API Routing | API Gateway |
 | Backend Server | ECS / EC2 |
 | Database | RDS PostgreSQL |
-| Real-Time Layer | SSE / EventBridge |
-| Billing | Stripe (external 💳) |
+| Real-Time System | SSE / EventBridge |
+| Payments | Stripe (external 💳) |
 
 ---
 
 ## ⚙️ Core Backend Services 🧠
 
 ### 🚀 API Service (ECS / EC2)
-The “brain” of the system 💡
+The “brain” of Kairos Live 🧠
 
 Handles:
-- Sermon creation & flow control 📖  
+- Sermon flow control 📖  
 - Authentication (JWT + RBAC) 🔐  
 - Multi-tenant isolation 🏢  
-- State validation & orchestration ⚙️  
+- State validation ⚙️  
 - Subscription enforcement 💳  
 
 ---
 
 ### 🗄️ Database (RDS PostgreSQL)
-The system’s memory 🧠
+The system’s memory 🧠✨
 
 Stores:
 - Users 👤  
@@ -86,18 +91,18 @@ Stores:
 - Slides + verses 📜  
 - Subscription state 💳  
 
-All data is safely isolated using `church_id` ✨
+All data is safely separated using `church_id` 🔒
 
 ---
 
-### 📡 Real-Time Event System (SSE Model)
+### 📡 Real-Time Event System (SSE) ⚡
 
-Kairos Live uses a **push-based real-time system** ⚡
+Kairos Live is powered by instant live updates:
 
-- Backend sends all updates
-- Clients listen (they don’t ask, they receive 💫)
-- No polling required
-- Everything updates instantly across all screens
+- Backend sends events  
+- Clients listen in real time  
+- No refreshing, no polling  
+- Everything stays perfectly synced ✨  
 
 Event types:
 - `verse_update` 📖  
@@ -108,13 +113,13 @@ Event types:
 ---
 
 ### 🖥️ Frontend Layer (S3 + CloudFront)
-The “display layer” 👀✨
+The “visual layer” 👀✨
 
 - Admin Dashboard → controls everything 🧑‍💼  
-- Remote Controller → live sermon navigation 🎮  
+- Remote Controller → live navigation 🎮  
 - Display Screen → fullscreen projection 🖥️  
 
-Frontends are **fully stateless** — they only reflect backend truth 💫
+Frontends are **fully stateless** — they only reflect backend truth.
 
 ---
 
@@ -128,7 +133,7 @@ APIGW[API Gateway 🚪]
 Backend[ECS Service 🚀]
 DB[(RDS Database 🗄️)]
 Events[SSE Event Stream ⚡]
-Clients[Display Clients 🖥️]
+Screens[🖥️ Display Screens]
 
 User --> APIGW
 APIGW --> Backend
@@ -137,22 +142,20 @@ Backend --> DB
 DB --> Backend
 
 Backend --> Events
-Events --> Clients
+Events --> Screens
 ```
 
 ### 💡 What happens here
-1. A user triggers an action 🎛️  
-2. API Gateway routes the request 🚪  
+1. User clicks something 🎛️  
+2. API receives request 🚪  
 3. Backend processes it 🧠  
-4. Database updates safely 🗄️  
-5. Event stream broadcasts instantly ⚡  
+4. Database updates 🗄️  
+5. Event fires instantly ⚡  
 6. All screens update together ✨  
 
 ---
 
 ## 📡 Real-Time Architecture Model 💫
-
-A simple view of the magic ✨
 
 ```mermaid
 flowchart LR
@@ -160,8 +163,8 @@ flowchart LR
 User[👤 Action]
 API[🚀 Backend]
 DB[(🗄️ Database)]
-Event[⚡ Live Event Stream]
-Screen[🖥️ All Screens]
+Event[⚡ Event Stream]
+Screen[🖥️ Screens]
 
 User --> API
 API --> DB
@@ -170,37 +173,35 @@ API --> Event
 Event --> Screen
 ```
 
-### 💡 The idea
-- You press a button 🎛️  
+### 💡 Simple idea:
+- You trigger something 🎛️  
 - Backend updates state 🧠  
-- Event is emitted ⚡  
-- Every screen updates instantly ✨  
+- Event is broadcast ⚡  
+- Everything updates instantly ✨  
 
 ---
 
 ## 🏢 Multi-Tenant SaaS Architecture 🏠
 
-Each church gets its own “safe space” 💖
+Each church is its own safe space 💖
 
 - Isolated via `church_id`
-- Fully separated data
-- No cross-access between tenants
-- Admins only see their workspace
+- No cross-data access
+- Secure authentication boundaries
+- Admin scoped per church
 - Owner has global override 👑  
 
 ---
 
-## 💳 Billing System (Stripe Integration) 💙
+## 💳 Billing System (Stripe) 💙
 
-Stripe handles all payments securely 💳
-
-### Billing Flow ✨
+Stripe handles all payments securely ✨
 
 ```mermaid
 flowchart TD
 
 User[👤 User]
-Plan[📦 Choose Plan]
+Plan[📦 Plan]
 Checkout[💳 Stripe Checkout]
 Payment[💰 Payment Success]
 Webhook[🔔 Stripe Webhook]
@@ -217,39 +218,39 @@ API --> DB
 DB --> Access
 ```
 
-### 💡 What happens
-- User picks a plan 📦  
+### 💡 Flow:
+- User chooses plan 📦  
 - Stripe processes payment 💳  
-- Backend receives confirmation 🔔  
+- Backend receives webhook 🔔  
 - Features unlock automatically ✨  
 
 ---
 
-## 🧠 Cloud Architecture Characteristics ☁️
+## 🧠 Cloud Architecture Traits ☁️
 
 Kairos Live is built like a real production cloud system:
 
-- Stateless backend services 🚀  
-- Managed database layer 🗄️  
-- Event-driven real-time updates ⚡  
-- Multi-tenant SaaS isolation 🏢  
-- External billing system (Stripe) 💳  
-- CDN-delivered frontend 🌐  
+✨ Stateless backend services  
+🗄️ Managed database (RDS)  
+⚡ Event-driven real-time updates  
+🏢 Multi-tenant isolation  
+💳 External billing (Stripe)  
+🌐 CDN-delivered frontend  
 
 ---
 
 ## 🚀 Summary ✨
 
-Kairos Live is a **cloud-native real-time SaaS platform** built to keep live church services perfectly synchronized across all devices 💖
+Kairos Live is a **cloud-native real-time SaaS system** built for perfectly synchronized live experiences.
 
-It demonstrates real-world system design principles:
+It demonstrates real-world system design:
 
-- Event-driven architecture ⚡  
-- Multi-tenant SaaS design 🏢  
-- Server-authoritative state 🧠  
-- Real-time distributed sync 🖥️  
-- AWS-style cloud decomposition ☁️  
+⚡ Event-driven architecture  
+🏢 Multi-tenant SaaS design  
+🧠 Server-authoritative state  
+🖥️ Real-time distributed updates  
+☁️ AWS-style cloud decomposition  
 
 ---
 
-💫 Built to make Sunday services just work — every time.
+💖 Built to make Sunday services just work — every time.
