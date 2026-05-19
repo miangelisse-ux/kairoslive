@@ -1,105 +1,72 @@
 # ⛪ Kairos Live
 
-https://kairos-livezip--miangelisse.replit.app/
+Real-time church service operating system for scripture, sermons, and live multi-screen presentation control.
 
-Real-time church service operating system for scripture, sermons, and live presentation control.
-
-Kairos Live is a SaaS platform that helps churches run Sunday services with live scripture display, sermon flow control, and multi-device synchronization — replacing PowerPoint, slide decks, and fragile presentation setups.
+Kairos Live is a SaaS platform that replaces traditional church presentation tools with a live, connected system for running Sunday services in real time.
 
 ---
 
 ## 🚀 What It Does
 
-Kairos Live lets churches run services in real time:
+Kairos Live helps churches run services without slides or manual syncing:
 
-- 📖 Display Bible verses instantly on screens
-- 🎤 Build and control sermon flows
-- 📱 Control services from mobile or desktop
-- 🖥️ Sync multiple display screens in real time
-- 🌍 Switch Bible translations instantly
-- 💳 Manage subscriptions via Stripe
+- 📖 Instant Bible verse display
+- 🎤 Sermon flow control system
+- 📱 Mobile + desktop remote control
+- 🖥️ Multi-screen live synchronization
+- 🌍 Bible translation switching
+- 💳 Subscription-based SaaS (Stripe)
 
 ---
 
 ## ⚡ Key Features
 
 ### 📺 Live Display
-- Fullscreen projector mode (`/display`)
-- Real-time updates (no refresh needed)
-- Always shows last known state
-- Clean church-branded presentation view
+- `/display` fullscreen projector mode  
+- Real-time updates (no refresh needed)  
+- Persistent last-known state  
+- Church-branded display mode  
 
 ### 🎛️ Sermon Control
-- Create sermon flows
-- Add verses, text, and slides
-- Next / previous / start / stop controls
-- Mobile-friendly remote control (`/remote`)
+- Build sermon flows  
+- Verse + text slides  
+- Next / previous / start / stop controls  
+- Mobile remote (`/remote`)  
 
 ### 📖 Bible System
-- Multiple translations (KJV, RVR, BBE, etc.)
-- Reference lookup (John 3:16)
-- Keyword search for live use
+- Multiple translations  
+- Reference lookup (John 3:16)  
+- Keyword search  
 
-### 🏢 Church Workspaces
-- Each church has its own isolated space
-- Role-based access (admin / user)
-- Secure multi-tenant system
+### 🏢 Multi-Tenant System
+- Isolated church workspaces  
+- Role-based access  
+- Secure data separation  
 
-### 💳 Subscriptions
-- Monthly & yearly plans
-- Stripe billing integration
-- Upgrade / downgrade anytime
+### 💳 Billing
+- Stripe subscriptions  
+- Monthly + yearly plans  
+- Billing portal integration  
 
 ---
 
 ## 🧠 Tech Stack
 
-- React + Vite
-- TypeScript
-- Express.js backend
-- PostgreSQL + Drizzle ORM
-- JWT authentication (httpOnly cookies)
-- Server-Sent Events (real-time updates)
-- Stripe payments
+- React + Vite  
+- TypeScript  
+- Express.js  
+- PostgreSQL + Drizzle ORM  
+- JWT Authentication (httpOnly cookies)  
+- Server-Sent Events (SSE)  
+- Stripe  
 
 ---
 
-## 📦 Project Structure
+## ⚙️ Setup
 
-```
-artifacts/
-  api-server/        Backend API (Express)
-  church-display/    Frontend (Dashboard + Display + Remote)
-
-lib/
-  db/                Database schema (Drizzle)
-  api-spec/          API contracts
-  api-client-react/  React API hooks
-```
-
----
-
-## 🔐 Environment Variables
-
-```env
-DATABASE_URL=
-JWT_SECRET=
-
-OWNER_EMAIL=miangelisse@gmail.com
-
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-
-STRIPE_STARTER_PRICE_ID=
-STRIPE_GROWTH_PRICE_ID=
-STRIPE_PRO_PRICE_ID=
-
-STRIPE_STARTER_YEARLY_PRICE_ID=
-STRIPE_GROWTH_YEARLY_PRICE_ID=
-STRIPE_PRO_YEARLY_PRICE_ID=
-
-RESEND_API_KEY=
-REPLIT_DOMAINS=
+```bash
+npm install
+npm run dev
 ```
 
 ---
@@ -107,93 +74,93 @@ REPLIT_DOMAINS=
 ## 🧭 Routes
 
 - `/` → Landing page  
-- `/login` → Sign in  
-- `/signup` → Create account  
+- `/login` → Login  
+- `/signup` → Sign up  
 - `/dashboard` → Church dashboard  
 - `/display` → Live projector screen  
 - `/remote` → Sermon controller  
 - `/sermons/:id` → Sermon builder  
 - `/billing` → Subscription management  
 - `/settings` → Church settings  
-- `/admin` → Owner dashboard  
+- `/admin` → Owner panel  
 
 ---
 
 ## 🔄 How It Works
 
-1. Create an account  
-2. Subscribe to a plan  
-3. Create a church workspace  
-4. Build sermon flow (verses + slides)  
-5. Connect display screen  
-6. Control live service in real time  
+1. Create account  
+2. Subscribe  
+3. Create church workspace  
+4. Build sermon flow  
+5. Connect display screens  
+6. Run live service  
 
 ---
 
 ## 🧩 Real-Time System
 
-- Backend is the source of truth
-- Display listens for updates in real time
-- Remote controls update backend only
-- No direct edits from display screen
+Backend controls all state.
 
-This ensures all devices stay perfectly in sync during live services.
-
----
-
-## 🏛️ Multi-Tenant System
-
-- Each church is fully isolated
-- Data is scoped by church workspace
-- Users only access their own church
-- Admins manage their own environment
-- Owner has global system access
+- Backend = source of truth  
+- SSE pushes updates  
+- Displays only listen  
+- Remote sends commands  
 
 ---
 
-## 💡 Core Idea
+## 🏛️ Multi-Tenant Model
+
+- Each church is isolated  
+- Data scoped by workspace  
+- Admin-per-church access  
+- Owner global override  
+
+---
+
+## 🧠 Architecture (Optional Deep Dive)
+
+<details>
+<summary>Click to expand system architecture</summary>
+
+- Server-authoritative event model  
+- SSE-based real-time sync  
+- State stored in PostgreSQL  
+- Remote controls as command layer  
+- Display clients are passive subscribers  
+
+Command flow:
+
+```
+Remote → Backend → Database → SSE → Displays
+```
+
+</details>
+
+---
+
+## 🔥 Philosophy
 
 > Sunday services should never fail because of software.
 
-Everything is built to be:
-- fast
-- simple
-- real-time
-- reliable
-- volunteer-friendly
+Built for:
+
+- reliability  
+- simplicity  
+- real-time control  
+- volunteer usability  
 
 ---
 
 ## 🧪 Status
 
-Kairos Live is live and in active production use:
-
-- SaaS system fully working
-- Stripe payments active
-- Real-time display system live
-- Multi-tenant architecture deployed
-
----
-
-## 🚀 Run Locally
-
-```bash
-npm install
-npm run dev
-```
-
-Then open the Replit web preview.
+- SaaS live in production  
+- Stripe billing active  
+- Real-time system working  
+- Multi-tenant architecture deployed  
 
 ---
 
 ## 👑 Owner
 
-Kairos Live by SureCatch
-
-Owner: `surecatchautomations@gmail.com`
-
----
-
-## 📄 License
-
-Proprietary — all rights reserved.
+Kairos Live by SureCatch  
+```
