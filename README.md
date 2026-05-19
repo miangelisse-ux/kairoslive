@@ -26,7 +26,7 @@ Instead of churches using PowerPoint, slide files, or disconnected tools, Kairos
 - 🔐 Manage church teams (admins, users, owners)  
 - 💳 Handle subscriptions like a SaaS product  
 
-
+https://github.com/miangelisse-ux/kairoslive/blob/7d749763ca98f53fffce672f861b05d94766194f/Assests/login.gif
 ---
 
 ## 🧠 Core idea
