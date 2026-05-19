@@ -2,51 +2,31 @@
 
 Real-time church service operating system for scripture, sermons, and live multi-screen presentation control.
 
-Kairos Live is a SaaS platform that replaces traditional church presentation tools with a live, connected system for running Sunday services in real time.
+Kairos Live is a SaaS platform that helps churches run Sunday services with real-time scripture display, sermon flow control, and synchronized displays across multiple devices.
 
 ---
 
 ## 🚀 What It Does
 
-Kairos Live helps churches run services without slides or manual syncing:
+Kairos Live replaces traditional presentation tools with a live service system:
 
 - 📖 Instant Bible verse display
-- 🎤 Sermon flow control system
+- 🎤 Sermon flow control (slides, verses, text)
+- 🖥️ Multi-screen real-time synchronization
 - 📱 Mobile + desktop remote control
-- 🖥️ Multi-screen live synchronization
 - 🌍 Bible translation switching
-- 💳 Subscription-based SaaS (Stripe)
+- 💳 Subscription-based access (Stripe)
 
 ---
 
 ## ⚡ Key Features
 
-### 📺 Live Display
-- `/display` fullscreen projector mode  
-- Real-time updates (no refresh needed)  
-- Persistent last-known state  
-- Church-branded display mode  
-
-### 🎛️ Sermon Control
-- Build sermon flows  
-- Verse + text slides  
-- Next / previous / start / stop controls  
-- Mobile remote (`/remote`)  
-
-### 📖 Bible System
-- Multiple translations  
-- Reference lookup (John 3:16)  
-- Keyword search  
-
-### 🏢 Multi-Tenant System
-- Isolated church workspaces  
-- Role-based access  
-- Secure data separation  
-
-### 💳 Billing
-- Stripe subscriptions  
-- Monthly + yearly plans  
-- Billing portal integration  
+- 📺 Live projector display (`/display`)
+- 🎛️ Sermon builder + controller (`/remote`)
+- 📖 Multi-translation Bible lookup
+- 🏢 Multi-tenant church workspaces
+- ⚡ Real-time updates (no refresh needed)
+- 💳 Stripe billing + subscriptions
 
 ---
 
@@ -56,111 +36,81 @@ Kairos Live helps churches run services without slides or manual syncing:
 - TypeScript  
 - Express.js  
 - PostgreSQL + Drizzle ORM  
-- JWT Authentication (httpOnly cookies)  
+- JWT Authentication  
 - Server-Sent Events (SSE)  
 - Stripe  
-
----
-
-## ⚙️ Setup
-
-```bash
-npm install
-npm run dev
-```
-
----
-
-## 🧭 Routes
-
-- `/` → Landing page  
-- `/login` → Login  
-- `/signup` → Sign up  
-- `/dashboard` → Church dashboard  
-- `/display` → Live projector screen  
-- `/remote` → Sermon controller  
-- `/sermons/:id` → Sermon builder  
-- `/billing` → Subscription management  
-- `/settings` → Church settings  
-- `/admin` → Owner panel  
 
 ---
 
 ## 🔄 How It Works
 
 1. Create account  
-2. Subscribe  
-3. Create church workspace  
+2. Subscribe to a plan  
+3. Set up church workspace  
 4. Build sermon flow  
 5. Connect display screens  
-6. Run live service  
+6. Run live service in real time  
 
 ---
 
 ## 🧩 Real-Time System
 
-Backend controls all state.
-
-- Backend = source of truth  
-- SSE pushes updates  
-- Displays only listen  
-- Remote sends commands  
+- Backend is the source of truth  
+- Displays subscribe to SSE updates  
+- Remote controls send commands to backend  
+- All screens stay synchronized automatically  
 
 ---
 
 ## 🏛️ Multi-Tenant Model
 
-- Each church is isolated  
-- Data scoped by workspace  
-- Admin-per-church access  
-- Owner global override  
+- Each church has isolated data  
+- Users belong to a workspace  
+- Admins manage their church only  
+- Owner has global system access  
 
 ---
 
-## 🧠 Architecture (Optional Deep Dive)
+## 🚀 Status
 
-<details>
-<summary>Click to expand system architecture</summary>
-
-- Server-authoritative event model  
-- SSE-based real-time sync  
-- State stored in PostgreSQL  
-- Remote controls as command layer  
-- Display clients are passive subscribers  
-
-Command flow:
-
-```
-Remote → Backend → Database → SSE → Displays
-```
-
-</details>
-
----
-
-## 🔥 Philosophy
-
-> Sunday services should never fail because of software.
-
-Built for:
-
-- reliability  
-- simplicity  
-- real-time control  
-- volunteer usability  
-
----
-
-## 🧪 Status
-
-- SaaS live in production  
-- Stripe billing active  
-- Real-time system working  
-- Multi-tenant architecture deployed  
+- SaaS deployed and active  
+- Stripe billing integrated  
+- Real-time system operational  
+- Multi-tenant architecture live  
 
 ---
 
 ## 👑 Owner
 
 Kairos Live by SureCatch  
+```
 
+---
+
+# 🧠 What changed (important)
+
+### Before:
+- too detailed
+- mixed architecture + product
+- long scanning time
+
+### Now:
+- clean SaaS pitch
+- structured for fast reading
+- architecture moved out
+- recruiter-friendly flow
+
+---
+
+# 🚀 Next upgrade option
+
+Now your repo is properly layered.
+
+Next possible improvements:
+
+### 1. 📊 Add a clean Mermaid architecture diagram (in README)
+### 2. 🧠 Upgrade `/docs/architecture.md` to match this separation perfectly
+### 3. 🔥 Build a GitHub profile README that ties ALL your projects together
+### 4. 💰 Add pricing + landing-page style section (if you want Indie Hacker traction)
+
+Just tell me what’s next.
