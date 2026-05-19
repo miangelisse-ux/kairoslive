@@ -1,3 +1,143 @@
+## 🧠 C4 Architecture Overview (System Levels)
+
+Kairos Live architecture is described using a C4-style breakdown:
+
+- **Level 0 (Context):** External users interacting with the platform  
+- **Level 1 (Container):** Core services and system boundaries  
+- **Level 2 (Component):** Internal service responsibilities
+
+---
+
+## 🌍 Level 0 — System Context
+
+```mermaid
+flowchart LR
+
+Church[⛪ Church Staff] --> Kairos[Kairos Live Platform]
+Kairos --> Audience[👥 Congregation Viewing Displays]
+Kairos --> Stripe[💳 Stripe Billing System]
+```
+
+### Context Description
+Kairos Live acts as the central coordination system between church operators, live audiences, and external billing infrastructure.
+
+---
+
+## 🏗️ Level 1 — Container Architecture
+
+```mermaid
+flowchart TB
+
+User[👤 Users / Admins]
+
+subgraph Kairos Live System
+
+Frontend[🖥️ Frontend Clients]
+API[🚀 API Server]
+DB[(🗄️ PostgreSQL)]
+SSE[📡 Real-Time SSE Layer]
+Billing[💳 Billing Service]
+
+end
+
+Stripe[Stripe API]
+
+User --> Frontend
+Frontend --> API
+API --> DB
+API --> SSE
+API --> Billing
+Billing --> Stripe
+Stripe --> Billing
+```
+
+### Container Description
+Kairos Live is composed of five core containers:
+
+- Frontend clients (dashboard, remote, display)
+- API server (core business logic)
+- PostgreSQL database (system of record)
+- SSE layer (real-time sync)
+- Billing service (Stripe integration)
+
+---
+
+## ⚙️ Level 2 — Core Backend Components
+
+```mermaid
+flowchart LR
+
+API[API Server]
+
+Auth[Auth / RBAC]
+Sermon[Sermon Engine]
+Church[Church / Multi-Tenant Logic]
+Billing[Subscription Logic]
+Realtime[SSE Event Dispatcher]
+DB[(PostgreSQL)]
+
+API --> Auth
+API --> Sermon
+API --> Church
+API --> Billing
+API --> DB
+
+Sermon --> Realtime
+Realtime --> Frontend[Display Clients]
+```
+
+---
+
+## 🔄 Runtime System Behavior Model
+
+Kairos Live operates as a **server-authoritative event-driven system**:
+
+```mermaid
+flowchart TD
+
+Action[User Action - Remote / Admin]
+API[API Server]
+DB[(Database Update)]
+Event[SSE Event Emission]
+Clients[All Display Clients]
+
+Action --> API
+API --> DB
+DB --> API
+API --> Event
+Event --> Clients
+```
+
+### Key Behavior Rules
+
+- Backend is the **single source of truth**
+- Clients never modify shared state directly
+- All updates propagate through SSE events
+- Database persists authoritative state
+- Displays are passive renderers
+
+---
+
+## 📡 Real-Time Architecture Summary
+
+- Server-Sent Events (SSE) handles live synchronization
+- No polling or client-side state replication
+- Event-driven propagation model ensures consistency
+- Multiple displays stay synchronized in real time
+
+---
+
+## 🧠 Architectural Insight
+
+This system is designed around:
+
+- **Event-driven architecture**
+- **Multi-tenant SaaS isolation**
+- **Server-authoritative state management**
+- **Real-time distributed synchronization**
+
+---
+
 Kairos Live architecture is best understood through multiple system views:
 
 - 🏗️ Container View (high-level system structure)
