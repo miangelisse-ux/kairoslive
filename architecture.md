@@ -1,36 +1,31 @@
 # 🧠 Kairos Live — Architecture
 
-Real-time church service operating system for scripture display, sermon control, and multi-device synchronization.
+---
 
-This document describes the system architecture, data flow, and core engineering decisions behind Kairos Live.
+## 🏗️ System Architecture
+
+Kairos Live is a real-time event-driven system composed of the following core components:
+
+- 🖥️ Frontend Clients (Admin / Remote / Display)
+- 🚀 API Server (Express + TypeScript)
+- 🗄️ PostgreSQL Database
+- 📡 SSE Real-Time Layer
+- 💳 Stripe Billing System
 
 ---
 
-## 🏗️ System Overview
-
-Kairos Live is a **real-time, server-authoritative SaaS platform** designed for live church service operations.
-
-The system enables:
-
-- Sermon creation and control
-- Real-time scripture and slide broadcasting
-- Multi-device synchronization (display + remote + admin)
-- Subscription-based access control
-
----
-
-## 🧩 High-Level Architecture
+## 📊 System Diagram
 
 ```mermaid
 graph TD
 
-A[Client: Admin / Remote] --> B[Express API Server]
+A[Admin / Remote Client] --> B[API Server]
 B --> C[(PostgreSQL Database)]
 
-B --> D[SSE Real-Time Layer]
+B --> D[SSE Event Layer]
 D --> E[Display Clients]
 
-B --> F[Stripe Billing System]
+B --> F[Stripe Billing]
 F --> B
 ```
 
@@ -38,204 +33,147 @@ F --> B
 
 ## ⚙️ Core Components
 
-### 🖥️ Frontend Clients
-- Admin dashboard (`/dashboard`)
-- Sermon controller (`/remote`)
-- Display screen (`/display`)
-
-These clients do NOT store state — they only render server data.
-
----
-
-### 🚀 Backend API (Express + TypeScript)
-Responsible for:
+### 🚀 API Server
+Handles all business logic and state mutations:
+- Sermon management
 - Authentication (JWT cookies)
-- Sermon CRUD operations
+- Role-based access control
 - State updates
-- Business logic execution
 - Subscription validation
 
 ---
 
 ### 🗄️ Database (PostgreSQL + Drizzle)
-Stores:
+Stores all persistent system data:
+
 - Users
-- Churches (multi-tenant)
+- Churches (multi-tenant scope)
 - Sermons
-- Sermon items (verses, slides)
+- Sermon items (verses, slides, text)
 - Subscription state
 
-All data is scoped by `church_id`.
+All records are scoped by `church_id`.
+
+---
+
+### 🖥️ Frontend Clients
+
+- **Admin Dashboard** → system management
+- **Remote Controller** → live sermon control
+- **Display Screen** → fullscreen presentation view
+
+Clients are stateless and fully server-driven.
 
 ---
 
 ### 📡 Real-Time Layer (SSE)
 
-Kairos Live uses **Server-Sent Events (SSE)** for real-time updates.
+Kairos Live uses Server-Sent Events (SSE) for real-time synchronization.
 
+- Backend emits events on state changes
 - Display clients subscribe to event stream
-- Backend pushes updates instantly
-- No client polling required
+- No polling required
+- Updates are pushed instantly
 
 ---
 
-### 💳 Billing System (Stripe)
-Handles:
-- Subscription creation
-- Plan upgrades/downgrades
-- Webhook-based state syncing
-- Access control enforcement
-
----
-
-## 🔄 System Data Flow
+## 🔄 Data Flow
 
 ### 🎛️ Sermon Update Flow
 
 ```text
-User Action (Remote)
-        ↓
-API Request (Express)
-        ↓
-Database Update (PostgreSQL)
-        ↓
-SSE Event Triggered
-        ↓
-All Display Clients Update Instantly
+Remote Action
+    ↓
+API Request
+    ↓
+Database Update
+    ↓
+SSE Event Trigger
+    ↓
+All Display Clients Update
 ```
 
 ---
 
-### 📖 Scripture Display Flow
+### 📖 Display Rendering Flow
 
 ```text
-Sermon Item Selected
-        ↓
-Backend Resolves Content
-        ↓
+Sermon State Change
+    ↓
+Backend Resolves Active Item
+    ↓
 SSE Broadcast Event
-        ↓
-Display Screens Render Verse/Text
+    ↓
+Display Updates Instantly
 ```
 
 ---
 
-## 📡 Real-Time Design
+## 📡 SSE Behavior Model
 
-Kairos Live uses a **server-authoritative model**:
+- Backend is the **single source of truth**
+- Clients subscribe to updates only
+- All mutations occur on the server
+- Events are broadcast system-wide
 
-### Rules:
-- Backend is the single source of truth
-- Clients cannot mutate shared state
-- All updates go through API layer
-- SSE broadcasts state changes
-
-### Benefits:
-- Prevents desync between screens
-- Ensures consistency during live services
-- Reduces client-side complexity
+### Event Types:
+- `verse_update`
+- `slide_update`
+- `service_state`
+- `service_control`
 
 ---
 
-## 🏢 Multi-Tenant Architecture
+## 🏢 Multi-Tenant Model
 
-Each church operates in an isolated workspace.
+Kairos Live is fully multi-tenant.
 
-### Isolation model:
-- `church_id` scopes all data
-- Users belong to one church
-- Sermons are workspace-bound
-- Admins only access their organization
+### Isolation Rules:
+- Each church has a unique `church_id`
+- All data is scoped per church
+- Users cannot access other churches
+- Admin access is workspace-limited
 
-### Ownership hierarchy:
-- 👤 Users → Church-level access
-- 🧑‍💼 Admin → Manage church workspace
-- 👑 Owner → Global system access
-
----
-
-## 🔐 Authentication System
-
-- JWT stored in httpOnly cookies
-- Session validated on API requests
-- Role-based access control (RBAC)
-- Church-scoped permissions
+### Roles:
+- 👤 User → limited access
+- 🧑‍💼 Admin → church-level control
+- 👑 Owner → global system access
 
 ---
 
-## 💳 Subscription Flow
+## 💳 Billing System (Stripe)
+
+### Flow:
 
 ```text
 User selects plan
-        ↓
-Stripe checkout session created
-        ↓
-Payment completed
-        ↓
-Stripe webhook sent to backend
-        ↓
+    ↓
+Stripe Checkout Session created
+    ↓
+Payment processed by Stripe
+    ↓
+Webhook sent to backend
+    ↓
 Subscription status updated in DB
-        ↓
-Access granted/updated
+    ↓
+Access permissions updated
 ```
 
----
-
-## 📦 State Management Philosophy
-
-Kairos Live avoids client-side state complexity.
-
-Instead:
-
-- Backend = source of truth
-- Clients = reactive renderers
-- SSE = sync mechanism
-
-This ensures predictable behavior during live events.
+### Responsibilities:
+- Subscription creation
+- Plan upgrades/downgrades
+- Webhook validation
+- Access enforcement
 
 ---
 
-## ⚡ Reliability Considerations
+## 🧠 System Design Principles
 
-- SSE auto-reconnect handling
-- Last-known-state persistence
-- Stateless client design
-- Graceful failure recovery
-- Webhook retry safety (Stripe)
-
----
-
-## 🧠 Design Principles
-
-- Real-time first architecture
 - Server-authoritative state model
-- Failure-resistant design for live environments
-- Minimal client-side logic
+- Event-driven real-time architecture
+- Stateless frontend clients
 - Multi-tenant isolation by default
-
----
-
-## 🚀 Deployment Model
-
-- Frontend: React (Vite)
-- Backend: Express API server
-- Database: PostgreSQL
-- Hosting: Cloud deployment (SaaS model)
-- Payments: Stripe
-- Real-time: SSE
-
----
-
-## 🧭 Summary
-
-Kairos Live is a real-time, multi-tenant SaaS platform designed for live church service operations.
-
-It demonstrates:
-
-- Event-driven architecture
-- Real-time synchronization systems
-- SaaS multi-tenant design
-- Server-authoritative state management
-- Stripe-integrated subscription systems
+- Stripe-based access control layer
+- SSE-based synchronization (no polling)
 
 ---
