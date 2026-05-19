@@ -15,20 +15,20 @@ It follows a **cloud-native, event-driven architecture** where all state changes
 ```mermaid
 flowchart TB
 
-Users[Church Staff / Admins]
+Users[Users]
 
-subgraph AWS_Cloud[Cloud Infrastructure (AWS Equivalent)]
+subgraph AWS[AWS Cloud]
 
-Frontend[S3 + CloudFront Frontend]
+Frontend[S3 CloudFront Frontend]
 API[API Gateway]
-Backend[ECS / EC2 API Service]
+Backend[ECS API Service]
 DB[(RDS PostgreSQL)]
-Events[Event Stream (SSE / WebSockets)]
+Events[SSE Event Layer]
 Billing[Billing Service]
 
 end
 
-Stripe[Stripe API]
+Stripe[Stripe]
 
 Users --> Frontend
 Frontend --> API
@@ -120,21 +120,21 @@ Clients only render server state (no local source of truth).
 ```mermaid
 flowchart TD
 
-UserAction[User Action (Admin / Remote)]
+User[User]
 APIGW[API Gateway]
-Backend[ECS API Service]
+Backend[ECS Service]
 DB[(RDS Database)]
-EventStream[SSE / Event System]
+Events[SSE Event Stream]
 Clients[Display Clients]
 
-UserAction --> APIGW
+User --> APIGW
 APIGW --> Backend
 
 Backend --> DB
 DB --> Backend
 
-Backend --> EventStream
-EventStream --> Clients
+Backend --> Events
+Events --> Clients
 ```
 
 ### Execution Steps
