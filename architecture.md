@@ -4,7 +4,7 @@
 
 ## 📊 System Overview 🌸
 
-Kairos Live is a **multi-tenant real-time SaaS platform** for running synchronized church services.
+Kairos Live is a **pre-deployment SaaS architecture and system design implementation**.
 
 It follows a **cloud-native, event-driven architecture**, where:
 
